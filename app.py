@@ -7,21 +7,20 @@ import os
 
 # API Key
 API_KEY = "AIzaSyDBYrye_IhG5fcZzqQjOaPLP0iL9zenqfY"
+genai.configure(api_key=API_KEY)
 
-# အရေးကြီးဆုံးအပိုင်း - API version ကို v1 လို့ အတင်းသတ်မှတ်ပါမယ်
-genai.configure(api_key=API_KEY, transport='rest') 
+# Model နာမည်ကို models/ မပါဘဲ ဒီအတိုင်းပဲ ရေးပါမယ်
+# ဒါက Google API တိုင်းမှာ အလုပ်လုပ်ရမယ့် နာမည်ပါ
+model = genai.GenerativeModel('gemini-pro')
 
-# Model ကို နာမည်အပြည့်အစုံမဟုတ်ဘဲ gemini-1.5-flash လို့ပဲ သုံးပါမယ်
-model = genai.GenerativeModel('gemini-1.5-flash')
-
-st.title("🇲🇲 AI Myanmar Voice (Final Fix)")
+st.title("🇲🇲 AI Myanmar Voice")
 
 if prompt := st.chat_input("မေးခွန်းရိုက်ပါ..."):
     st.chat_message("user").markdown(prompt)
     with st.chat_message("assistant"):
         try:
-            # Model အလုပ်လုပ်မလုပ် အရင်စစ်မယ်
-            response = model.generate_content(prompt)
+            # အခြေခံအကျဆုံး response နည်းလမ်းကို သုံးပါမယ်
+            response = model.generate_content(prompt, stream=False)
             ai_text = response.text
             st.markdown(ai_text)
             
@@ -37,5 +36,7 @@ if prompt := st.chat_input("မေးခွန်းရိုက်ပါ..."):
             os.remove(audio_path)
             
         except Exception as e:
-            st.error(f"Error Detail: {str(e)}")
-            st.info("အကယ်၍ 404 ဖြစ်နေသေးရင် app settings ထဲမှာ API Key ကို ပြန်စစ်ပေးပါ။")
+            # Error တက်ရင် အဖြေရှာရလွယ်အောင် Error စာသားကို အကုန်ပြပါမယ်
+            st.error(f"Error: {str(e)}")
+            st.warning("Google API က Model ကို ရှာမတွေ့တာ ဖြစ်နိုင်ပါတယ်။")
+            
