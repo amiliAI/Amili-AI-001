@@ -5,27 +5,25 @@ import edge_tts
 import tempfile
 import os
 
-# API Key
+# သင် အခုလေးတင် ပေးလိုက်တဲ့ API Key အသစ်
 API_KEY = "AIzaSyBVZ7D9YugpdTKxyCe0yRfHVhG819NDY1g"
-
-# အရေးကြီးဆုံးအချက် - v1beta အစား v1 ကို အတင်းသုံးခိုင်းပါမယ်
-# ဒါက 404 Error ကို ကျော်လွှားဖို့ တစ်ခုတည်းသောနည်းလမ်းပါ
 genai.configure(api_key=API_KEY)
 
-# Model နာမည်ကို နာမည်အပြည့်အစုံ သုံးပါမယ်
-model = genai.GenerativeModel(model_name="models/gemini-1.5-flash-latest")
+# တည်ငြိမ်မှု အရှိဆုံး Model ကို သုံးပါမယ်
+model = genai.GenerativeModel('gemini-1.5-flash')
 
-st.title("🇲🇲 AI Myanmar Voice (Final Test)")
+st.title("🇲🇲 AI Myanmar Voice (Final Success)")
 
 if prompt := st.chat_input("မေးခွန်းရိုက်ပါ..."):
     st.chat_message("user").markdown(prompt)
     with st.chat_message("assistant"):
         try:
-            # Generate content with exact model
+            # AI အဖြေထုတ်ခြင်း
             response = model.generate_content(prompt)
             ai_text = response.text
             st.markdown(ai_text)
             
+            # အသံဖိုင်ပြောင်းလဲခြင်း
             async def speak(text):
                 communicate = edge_tts.Communicate(text, "my-MM-NilarNeural")
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as tmp:
@@ -38,7 +36,5 @@ if prompt := st.chat_input("မေးခွန်းရိုက်ပါ..."):
             os.remove(audio_path)
             
         except Exception as e:
-            # ဘာကြောင့် Error တက်လဲဆိုတာ အတိအကျပြပါမယ်
-            st.error(f"Error Detail: {str(e)}")
-            st.info("အကယ်၍ 404 ဖြစ်နေသေးရင် API Key အသစ်တစ်ခု လိုအပ်နိုင်ပါတယ်။")
-            
+            st.error(f"Error: {str(e)}")
+
