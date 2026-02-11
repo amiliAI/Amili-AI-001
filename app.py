@@ -6,7 +6,7 @@ import tempfile
 import os
 
 # API Key
-API_KEY = "AIzaSyDBYrye_IhG5fcZzqQjOaPLP0iL9zenqfY"
+API_KEY = "AIzaSyBVZ7D9YugpdTKxyCe0yRfHVhG819NDY1g"
 
 # အရေးကြီးဆုံးအချက် - v1beta အစား v1 ကို အတင်းသုံးခိုင်းပါမယ်
 # ဒါက 404 Error ကို ကျော်လွှားဖို့ တစ်ခုတည်းသောနည်းလမ်းပါ
